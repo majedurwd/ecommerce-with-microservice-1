@@ -17,17 +17,17 @@ app.get("/health", (_req, res) => {
     res.status(200).json({status: "UP"})
 })
 
-app.use((req, res, next) => {
-    const allowedOrigin = ['http://localhost:8081', 'http://127.0.0.1:8081']
-    const origin = req.headers.origin || ''
-    if (allowedOrigin.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin)
-        next()
-    } else {
-        res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
-        return res.status(403).json({message: 'Forbidden'})
-    }
-})
+// app.use((req, res, next) => {
+//     const allowedOrigin = ['http://localhost:8081', 'http://127.0.0.1:8081']
+//     const origin = req.headers.origin || ''
+//     if (allowedOrigin.includes(origin)) {
+//         res.setHeader('Access-Control-Allow-Origin', origin)
+//         next()
+//     } else {
+//         res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
+//         return res.status(403).json({message: 'Forbidden'})
+//     }
+// })
 
 // routes
 app.get('/inventories/:id/details', getInventoryDetails)
