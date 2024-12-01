@@ -3,7 +3,8 @@ import prisma from "../prisma";
 import { UserCreateSchema } from "../schemas";
 import bcrypt from "bcryptjs";
 import axios from "axios";
-import { USER_SERVICE } from "@/config";
+import { EMAIL_SERVICE, USER_SERVICE } from "../config";
+import { generateVerificatioinCode } from "../utils";
 
 const userRegistration = async (
 	req: Request,
@@ -59,10 +60,29 @@ const userRegistration = async (
 			email: user.email,
 		});
 
-		// TODO: generate verification code
-		// TODO: send verification email
+		// generate verification code
+		const code = generateVerificatioinCode();
 
-		return res.status(201).json(user);
+		await prisma.verificationCode.create({
+			data: {
+				userId: user.id,
+				code,
+				expiredAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+			},
+		});
+
+		// send verification email
+		await axios.post(`${EMAIL_SERVICE}/emails/send`, {
+			recipient: user.email,
+			subject: "Email Verification",
+			body: `Your verification code is ${code}`,
+			source: "user-registration",
+		});
+
+		return res.status(201).json({
+			message: "User created. Check your mail for verification code",
+			user,
+		});
 	} catch (error) {
 		next(error);
 	}
