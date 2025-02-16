@@ -4,7 +4,7 @@ import { UserCreateSchema } from "../schemas";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { EMAIL_SERVICE, USER_SERVICE } from "../config";
-import { generateVerificatioinCode } from "../utils";
+import { generateVerificationCode } from "../utils";
 
 const userRegistration = async (
 	req: Request,
@@ -61,7 +61,7 @@ const userRegistration = async (
 		});
 
 		// generate verification code
-		const code = generateVerificatioinCode();
+		const code = generateVerificationCode();
 
 		await prisma.verificationCode.create({
 			data: {

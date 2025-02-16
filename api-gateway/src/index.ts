@@ -27,6 +27,10 @@ app.use('/api', limiter)
 app.use(morgan("dev"))
 app.use(express.json())
 
+app.get("/health", (_req, res) => {
+	res.status(200).json({ message: "API Gateway is running" });
+});
+
 // TODO: Auth Middleware
 
 // routes
@@ -35,10 +39,6 @@ configureRoutes(app)
 // 404 handler
 app.use((_req, res) => {
     return res.status(404).json({message: 'Not found'})
-})
-
-app.get('/health',(_req, res) => {
-    res.status(200).json({message: 'API Gateway is running'})
 })
 
 app.use((err, _req, res, _next) => {

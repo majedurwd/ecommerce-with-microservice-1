@@ -4,6 +4,7 @@ import prisma from '../prisma'
 
 const getProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log("Origin", req.headers.origin);
         const products = await prisma.product.findMany({
             select: {
                 id: true,

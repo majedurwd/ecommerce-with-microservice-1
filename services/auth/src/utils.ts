@@ -1,4 +1,4 @@
-export const generateVerificatioinCode = () => {
+export const generateVerificationCode = () => {
 	// get current timestamp in milliseconds
 	const timestamp = new Date().getTime().toString();
 
